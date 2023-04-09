@@ -3,7 +3,7 @@
   width: 22px;
   height: 19px;
   border: none;
-  background-image: url(../../../images/like-icon.svg);
+  background-image: url(../../../components/images/like-icon.svg);
   cursor: pointer;
   transition: all 0.2s ease;
   padding-bottom: 3px;

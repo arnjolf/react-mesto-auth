@@ -6,7 +6,7 @@ export default function Card({ card, onCardClick }) {
     <article className="element">
       <img
         src={card.link}
-        alt=""
+        alt={card.name}
         className="element__image"
         onClick={handleClick}
       />

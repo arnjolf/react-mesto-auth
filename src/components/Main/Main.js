@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../utils/Api";
 import Card from "../Card/Card";
 
@@ -8,27 +8,37 @@ export default function Main({
   onEditAvatar,
   onCardClick,
 }) {
-  let [userName, setUserName] = React.useState("");
-  let [userDescription, setUserDescription] = React.useState("");
-  let [userAvatar, setUserAvatar] = React.useState("");
-  let [cards, setCards] = React.useState([]);
+  const [userName, setUserName] = useState("");
+  const [userDescription, setUserDescription] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
-    api.getUser().then((res) => {
-      setUserName(res.name);
-      setUserDescription(res.about);
-      setUserAvatar(res.avatar);
-    });
+  useEffect(() => {
+    api
+      .getUser()
+      .then((res) => {
+        setUserName(res.name);
+        setUserDescription(res.about);
+        setUserAvatar(res.avatar);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  React.useEffect(() => {
-    api.getCards().then((res) => {
-      setCards(res);
-    });
+  useEffect(() => {
+    api
+      .getCards()
+      .then((res) => {
+        setCards(res);
+      })
+      .then((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
-    <main class="main">
+    <main className="main">
       <section class="profile">
         <div
           onClick={onEditAvatar}

@@ -1,7 +1,7 @@
 .profile__edit-button {
   background-color: transparent;
   border: 1px solid white;
-  background-image: url(../../../images/pen-icon.svg);
+  background-image: url(../../../components/images/pen-icon.svg);
   background-position: center;
   background-repeat: no-repeat;
   width: 24px;

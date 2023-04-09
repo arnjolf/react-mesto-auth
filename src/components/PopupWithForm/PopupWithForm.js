@@ -29,7 +29,7 @@ export default function PopupWithForm({
             className="popup__save-button"
             id="card__save-button"
           >
-            {buttonText}
+            {buttonText || "Сохранить"}
           </button>
         </form>
       </div>
