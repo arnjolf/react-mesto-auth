@@ -32,37 +32,37 @@ export default function Main({
       .then((res) => {
         setCards(res);
       })
-      .then((err) => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
 
   return (
     <main className="main">
-      <section class="profile">
+      <section className="profile">
         <div
           onClick={onEditAvatar}
           className="profile__avatar-place"
           style={{ backgroundImage: `url(${userAvatar})` }}
         ></div>
-        <div class="profile__info">
-          <h1 class="profile__name">{userName}</h1>
+        <div className="profile__info">
+          <h1 className="profile__name">{userName}</h1>
           <button
             onClick={onEditProfile}
             type="button"
-            class="profile__edit-button"
+            className="profile__edit-button"
             aria-label="Редактировать профиль"
           ></button>
-          <p class="profile__job">{userDescription}</p>
+          <p className="profile__job">{userDescription}</p>
         </div>
         <button
           onClick={onAddPlace}
           type="button"
-          class="profile__add-button"
+          className="profile__add-button"
           aria-label="добавить карточку"
         ></button>
       </section>
-      <section class="elements">
+      <section className="elements">
         {cards.map((card) => {
           return <Card onCardClick={onCardClick} key={card._id} card={card} />;
         })}
