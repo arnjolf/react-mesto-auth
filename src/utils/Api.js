@@ -111,6 +111,10 @@ class Api {
       });
   }
 
+  changeLikeCardStatus(cardId, isLiked) {
+    return isLiked ? this.dislikeCard(cardId) : this.likeCard(cardId);
+  }
+
   changeUserAvatar(src) {
     return fetch(`${this._basePath}/users/me/avatar`, {
       headers: this._getHeaders(),
