@@ -13,6 +13,12 @@ export default function AddPlacePopup({ onClose, isOpen, onAddPlace }) {
       "place-src": srcRef.current.value,
     });
   }
+
+  React.useEffect(() => {
+    nameRef.current.value = "";
+    srcRef.current.value = "";
+  }, [isOpen]);
+
   return (
     <PopupWithForm
       name="add-card"

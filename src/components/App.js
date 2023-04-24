@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { api } from "../utils/Api";
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
@@ -11,16 +11,14 @@ import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup/AddPlacePopup";
 
 function App() {
-  const [cards, setCards] = React.useState([]);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [cards, setCards] = useState([]);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
 
-  const [currentUser, setCurrentUser] = React.useState({});
-  React.useEffect(() => {
+  const [currentUser, setCurrentUser] = useState({});
+  useEffect(() => {
     api
       .getUser()
       .then((res) => {
@@ -31,7 +29,7 @@ function App() {
       });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getCards()
       .then((res) => {
@@ -43,9 +41,14 @@ function App() {
   }, []);
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then(() => {
-      setCards(cards.filter((c) => c._id !== card._id));
-    });
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards(cards.filter((c) => c._id !== card._id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleCardLike(card) {
@@ -53,9 +56,14 @@ function App() {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-      setCards(cards.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards(cards.map((c) => (c._id === card._id ? newCard : c)));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleEditProfileClick() {
@@ -82,6 +90,9 @@ function App() {
       })
       .then(() => {
         closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -93,6 +104,9 @@ function App() {
       })
       .then(() => {
         closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -104,6 +118,9 @@ function App() {
       })
       .then(() => {
         closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 

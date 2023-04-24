@@ -7,6 +7,9 @@ export default function EditAvatarPopup({ onClose, isOpen, onUpdateAvatar }) {
     e.preventDefault();
     onUpdateAvatar(inputRef.current.value);
   }
+  React.useEffect(() => {
+    inputRef.current.value = "";
+  }, [isOpen]);
   return (
     <PopupWithForm
       name="change-avatar"

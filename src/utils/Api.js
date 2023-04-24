@@ -45,11 +45,7 @@ class Api {
         name: newItems["profile-name"],
         about: newItems["profile-job"],
       }),
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 
   postNewCard(newItems) {
@@ -60,55 +56,35 @@ class Api {
         name: newItems["place-name"],
         link: newItems["place-src"],
       }),
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 
   likeCard(cardId) {
     return fetch(`${this._basePath}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: this._getHeaders(),
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 
   cardIsLiked(cardId) {
     return fetch(`${this._basePath}/cards/${cardId}/likes`, {
       method: "GET",
       headers: this._getHeaders(),
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 
   dislikeCard(cardId) {
     return fetch(`${this._basePath}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this._getHeaders(),
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 
   deleteCard(id) {
     return fetch(`${this._basePath}/cards/${id}`, {
       headers: this._getHeaders(),
       method: "DELETE",
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 
   changeLikeCardStatus(cardId, isLiked) {
@@ -120,11 +96,7 @@ class Api {
       headers: this._getHeaders(),
       method: "PATCH",
       body: JSON.stringify({ avatar: src["avatar-src"] }),
-    })
-      .then(this._getJson)
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getJson);
   }
 }
 
