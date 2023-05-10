@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../utils/Api";
 import Footer from "./Footer/Footer";
-import Header from "./Header/Header";
 import Main from "./Main/Main";
 import PopupWithForm from "./PopupWithForm/PopupWithForm";
 import ImagePopup from "./ImagePopup/ImagePopup";
@@ -9,6 +8,11 @@ import { UserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup/EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup/AddPlacePopup";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import Login from "./Login/Login";
+import Register from "./Register/Register";
+import { tokenAuth } from "../Auth";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -16,6 +20,31 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      tokenAuth(jwt).then((res) => {
+        if (res) {
+          setUserEmail(res.data.email);
+          setLoggedIn(true);
+          navigate("/", { replace: true });
+        }
+      });
+    }
+  };
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   const [currentUser, setCurrentUser] = useState({});
   useEffect(() => {
@@ -130,45 +159,61 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setSelectedCard(null);
   }
+
   return (
     <UserContext.Provider value={currentUser}>
       <div className="App">
         <div className="wrapper">
-          <Header />
-          <Main
-            cards={cards}
-            onCardClick={handleCardClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
-          <Footer />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute
+                  userEmail={userEmail}
+                  element={Main}
+                  cards={cards}
+                  onCardClick={handleCardClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  loggedIn={loggedIn}
+                />
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Login handleLogin={handleLogin} setUserEmail={setUserEmail} />
+              }
+            />
+            <Route path="/sign-up" element={<Register />} />
+          </Routes>
         </div>
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-        />
-        <AddPlacePopup
-          onClose={closeAllPopups}
-          isOpen={isAddPlacePopupOpen}
-          onAddPlace={handleAddPlaceSubmit}
-        />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
-        <PopupWithForm
-          name="delete-card"
-          title="Вы уверены?"
-          buttonText="Да"
-          onClose={closeAllPopups}
-        ></PopupWithForm>
-        <EditAvatarPopup
-          onClose={closeAllPopups}
-          isOpen={isEditAvatarPopupOpen}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
       </div>
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+      />
+      <AddPlacePopup
+        onClose={closeAllPopups}
+        isOpen={isAddPlacePopupOpen}
+        onAddPlace={handleAddPlaceSubmit}
+      />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
+      <PopupWithForm
+        name="delete-card"
+        title="Вы уверены?"
+        buttonText="Да"
+        onClose={closeAllPopups}
+      ></PopupWithForm>
+      <EditAvatarPopup
+        onClose={closeAllPopups}
+        isOpen={isEditAvatarPopupOpen}
+        onUpdateAvatar={handleUpdateAvatar}
+      />
     </UserContext.Provider>
   );
 }
