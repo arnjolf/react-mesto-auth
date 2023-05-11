@@ -1,10 +1,9 @@
 import { useState } from "react";
 import Header from "../Header/Header";
 import { Link, useNavigate } from "react-router-dom";
-import * as Auth from "../../Auth";
-import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import * as Auth from "../../utils/Auth";
 
-export default function Login() {
+export default function Login({ handleRegister }) {
   const [formValue, setFormValue] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
@@ -19,12 +18,8 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // здесь обработчик регистрации
     const { email, password } = formValue;
-    Auth.register(email, password).then(() => {
-      navigate("/sign-in", { replace: true });
-    });
+    handleRegister(email, password);
   };
 
   return (

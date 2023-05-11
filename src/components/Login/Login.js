@@ -1,12 +1,8 @@
 import Header from "../Header/Header";
 import { useState } from "react";
-import * as Auth from "../../Auth";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login({
-  handleLogin,
-  setUserEmail = { setUserEmail },
-}) {
+export default function Login({ handleAuth, setUserEmail = { setUserEmail } }) {
   const [formValue, setFormValue] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
@@ -21,16 +17,8 @@ export default function Login({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    Auth.authorize(formValue.email, formValue.password)
-      .then((data) => {
-        if (data.token) {
-          setUserEmail(formValue.email);
-          setFormValue({ email: "", password: "" });
-          handleLogin();
-          navigate("/", { replace: true });
-        }
-      })
-      .catch((err) => console.log(err));
+    handleAuth(formValue);
+    setFormValue({ email: "", password: "" });
   };
   return (
     <>

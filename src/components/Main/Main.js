@@ -13,6 +13,7 @@ export default function Main({
   onCardDelete,
   cards,
   userEmail,
+  onSignOut,
 }) {
   const userObject = useContext(UserContext);
 
@@ -23,6 +24,7 @@ export default function Main({
         link_action="Выйти"
         isMain={true}
         userEmail={userEmail}
+        onSignOut={onSignOut}
       />
       <main className="main">
         <section className="profile">
