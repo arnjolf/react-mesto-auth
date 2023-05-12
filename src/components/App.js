@@ -57,26 +57,30 @@ function App() {
   };
 
   useEffect(() => {
-    api
-      .getUser()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loggedIn === true]);
+    if (loggedIn) {
+      api
+        .getUser()
+        .then((res) => {
+          setCurrentUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
-    api
-      .getCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loggedIn === true]);
+    if (loggedIn) {
+      api
+        .getCards()
+        .then((res) => {
+          setCards(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function handleCardDelete(card) {
     api
